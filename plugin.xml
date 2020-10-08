@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		id="cordova-plugin-trustly"
+		version="0.0.1">
+
+	<name>Trustly Cordova Plugin</name>
+	<description>Add Trustly support to your cordova apps</description>
+	<author>Eugene Trusevich</author>
+	<license>MIT</license>
+	<keywords>codova,trustly</keywords>
+	<repo>https://github.com/expcapitaldev/cordova-plugin-trustly.git</repo>
+	<issue>https://github.com/expcapitaldev/cordova-plugin-trustly/issues</issue>
+
+	<engines>
+		<engine name="cordova-android" version=">=8.1.0" />  <!-- actual values for main app -->
+		<engine name="cordova-ios" version=">=5.1.1" />
+	</engines>
+
+	<!-- android -->
+	<platform name="android">
+
+		<js-module src="www/Trustly.js" name="Trustly">
+			<clobbers target="cordova.plugins.Trustly" />
+		</js-module>
+
+		<config-file target="res/xml/config.xml" parent="/*">
+			<feature name="Trustly">
+				<param name="android-package" value="com.expcapital.trustly.Trustly"/>
+				<param name="onload" value="true" />
+			</feature>
+		</config-file>
+
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+			<activity
+					android:name="com.expcapital.trustly.TrustlyActivity"/>
+		</config-file>
+
+		<config-file target="AndroidManifest.xml" parent="/*">
+			<uses-permission android:name="android.permission.INTERNET"/>
+		</config-file>
+
+		<source-file src="src/android/com/expcapital/trustly/Trustly.java" target-dir="src/com/expcapital/trustly" />
+		<source-file src="src/android/com/expcapital/trustly/TrustlyActivity.java" target-dir="src/com/expcapital/trustly" />
+		<source-file src="src/android/com/expcapital/trustly/TrustlyJavascriptInterface.java" target-dir="src/com/expcapital/trustly" />
+		<source-file src="src/android/com/expcapital/trustly/TrustlyWebChromeClient.java" target-dir="src/com/expcapital/trustly" />
+		<source-file src="src/android/com/expcapital/trustly/TrustlyWebView.java" target-dir="src/com/expcapital/trustly" />
+		<source-file src="src/android/com/expcapital/trustly/WebSettingsException.java" target-dir="src/com/expcapital/trustly" />
+
+	</platform>
+
+</plugin>
