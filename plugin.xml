@@ -18,12 +18,12 @@
 		<engine name="cordova-ios" version=">=5.1.1" />
 	</engines>
 
+	<js-module src="www/Trustly.js" name="Trustly">
+		<clobbers target="cordova.plugins.Trustly" />
+	</js-module>
+
 	<!-- android -->
 	<platform name="android">
-
-		<js-module src="www/Trustly.js" name="Trustly">
-			<clobbers target="cordova.plugins.Trustly" />
-		</js-module>
 
 		<config-file target="res/xml/config.xml" parent="/*">
 			<feature name="Trustly">
@@ -47,6 +47,31 @@
 		<source-file src="src/android/com/expcapital/trustly/TrustlyWebChromeClient.java" target-dir="src/com/expcapital/trustly" />
 		<source-file src="src/android/com/expcapital/trustly/TrustlyWebView.java" target-dir="src/com/expcapital/trustly" />
 		<source-file src="src/android/com/expcapital/trustly/WebSettingsException.java" target-dir="src/com/expcapital/trustly" />
+
+	</platform>
+
+	<platform name="ios">
+
+		<config-file target="config.xml" parent="/*">
+			<feature name="Trustly">
+				<param name="ios-package" value="TrustlyPlugin" />
+			</feature>
+		</config-file>
+
+		<header-file src="src/ios/CDVTrustly-Bridging-Header.h" />
+		<source-file src="src/ios/CDVTrustlyPlugin.swift" />
+		<source-file src="src/ios/CDVTrustlyOpenURLScheme.swift" />
+		<source-file src="src/ios/CDVTrustlyWKWebView.swift" />
+
+		<config-file target="*-Info.plist" parent="LSApplicationQueriesSchemes">
+			<array>
+				<string>swish</string>
+				<string>bankid</string>
+			</array>
+		</config-file>
+
+		<dependency id="cordova-plugin-add-swift-support" version="2.0.2"/>
+<!--		<preference name="UseSwiftLanguageVersion" value="4.2"/>-->
 
 	</platform>
 
