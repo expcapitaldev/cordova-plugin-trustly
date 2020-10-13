@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0",
+  "name": "cordova-plugin-trustly",
+  "cordova_name": "Cordova Trustly Plugin",
+  "description": "Cordova Trustly Plugin",
+  "license": "MIT",
+  "main": "www/Trustly.js",
+  "types": "./types/index.d.ts",
+  "repo": "",
+  "issue": "",
+  "author": "Eugene Trusevich",
+  "repository": {
+	"type": "git",
+	"url": "https://github.com/expcapitaldev/cordova-plugin-trustly"
+  },
+  "keywords": [
+	"cordova",
+	"trustly",
+	"cordova-android",
+	"cordova-ios",
+	"payment",
+	"ios",
+	"android",
+	"cordova"
+  ],
+  "platforms": [
+	"android",
+	"ios"
+  ]
+}
