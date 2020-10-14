@@ -32,14 +32,16 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.webkit.JavascriptInterface;
 
+import java.lang.ref.WeakReference;
+
 public class TrustlyJavascriptInterface {
 
     public static final String NAME = "TrustlyAndroid";
+    private WeakReference<Activity> activityRef;
 
-    Activity activity;
 
     public TrustlyJavascriptInterface(Activity a) {
-        activity = a;
+        this.activityRef = new WeakReference<>(a);
     }
 
     /**
@@ -50,7 +52,10 @@ public class TrustlyJavascriptInterface {
      */
     @JavascriptInterface
     public boolean openURLScheme(String packageName, String URIScheme) {
-        if (isPackageInstalledAndEnabled(packageName, activity)) {
+
+        Activity activity = this.activityRef.get();
+
+        if (activity != null && isPackageInstalledAndEnabled(packageName, activity)) {
             Intent intent = new Intent();
             intent.setPackage(packageName);
             intent.setAction(Intent.ACTION_VIEW);
