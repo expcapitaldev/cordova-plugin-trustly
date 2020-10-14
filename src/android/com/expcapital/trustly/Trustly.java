@@ -13,9 +13,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Trustly extends CordovaPlugin {
     private static final String ACTION_START_TRUSTLY_FLOW = "startTrustlyFlow";
@@ -42,16 +42,15 @@ public class Trustly extends CordovaPlugin {
     private void startTrustlyFlow(CordovaArgs args, CallbackContext callbackContext) {
         Log.d(LOGTAG, String.format("Starting trustly flow with args: %s", args.toString()));
 
-        List<String> endUrls = new ArrayList<String>();
+        ArrayList<String> endUrls = new ArrayList<String>();
         String urlString;
         try {
             urlString = args.getString(0);
-            new URL(urlString);
+            new URL(urlString).toURI();
 
-            JSONArray urlsArray;
-            try {
-                urlsArray = args.getJSONArray(1);
-            } catch (JSONException e) {
+            JSONArray urlsArray = args.getJSONArray(1);
+
+            if (urlsArray.length() == 0) {
                 callbackContext.sendPluginResult(makeErrorResult("endUrls needs to be an array with at least one element of type string"));
                 return;
             }
@@ -66,12 +65,11 @@ public class Trustly extends CordovaPlugin {
             return;
         } catch (MalformedURLException e) {
             Log.d(LOGTAG, "Malformed URL " + e.getMessage());
-            callbackContext.sendPluginResult(makeErrorResult("Given URL is not valid"));
+            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.MALFORMED_URL_EXCEPTION));
             return;
-        }
-
-        if (endUrls.size() < 1) {
-            callbackContext.sendPluginResult(makeErrorResult("endUrls needs to be an array with at least one element of type string"));
+        } catch (URISyntaxException e) {
+            Log.d(LOGTAG, "URISyntaxException URL " + e.getMessage());
+            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.MALFORMED_URL_EXCEPTION));
             return;
         }
 
@@ -81,9 +79,9 @@ public class Trustly extends CordovaPlugin {
         trustlyIntent.putExtra(
                 TrustlyActivity.TRUSTLY_URL_MESSAGE,
                 urlString);
-        trustlyIntent.putExtra(
+        trustlyIntent.putStringArrayListExtra(
                 TrustlyActivity.TRUSTLY_END_URLS_MESSAGE,
-                endUrls.toArray(new String[endUrls.size()]));
+                endUrls);
 
         this.cordova.startActivityForResult(this, trustlyIntent, REQUEST_CODE);
     }
@@ -107,10 +105,6 @@ public class Trustly extends CordovaPlugin {
                     PluginResult result = new PluginResult(PluginResult.Status.OK, object);
                     this.callbackContext.sendPluginResult(result);
                     break;
-
-//                 case TrustlyActivity.RESULT_CANCELED:
-//                     this.callbackContext.sendPluginResult(makeErrorResult("User cancelled flow.", "cancelled"));
-//                     break;
 
                 default:
                     this.callbackContext.sendPluginResult(makeErrorResult("Unknown error"));
