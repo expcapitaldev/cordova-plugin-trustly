@@ -3,24 +3,24 @@ interface Cordova {
 }
 
 interface CordovaPlugins {
-	trustly: ITrustlyPlugin;
+	Trustly: ITrustlyPlugin;
 }
 
-interface ITrustlyPluginSuccess {
-	finalUrl: string;
-}
-
+/**
+ * Common error from ITrustlyPlugin
+ */
 interface ITrustlyPluginError {
 	code: string;
 	message: string;
 }
 
 interface ITrustlyPlugin {
-	startTrustlyFlow(
-		url: string,
-		endUrls: string[],
-		successfulCallback: (result: ITrustlyPluginSuccess) => void,
-		errorCallback: (error: ITrustlyPluginError) => void,
-	): void;
+	/**
+	 *
+	 * @param url
+	 * @param endUrls
+	 *
+	 * Return String, final url from your endUrls
+	 */
+	startTrustlyFlow(url: string, endUrls: string[]): Promise<string>;
 }
-

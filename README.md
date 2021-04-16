@@ -21,37 +21,36 @@ interface CordovaPlugins {
 	trustly: ITrustlyPlugin;
 }
 
-interface ITrustlyPluginSuccess {
-	finalUrl: string;
-}
-
+/**
+ * Common error from ITrustlyPlugin
+ */
 interface ITrustlyPluginError {
 	code: string;
 	message: string;
 }
 
 interface ITrustlyPlugin {
-	startTrustlyFlow(
-		url: string,
-		endUrls: string[],
-		successfulCallback: (result: ITrustlyPluginSuccess) => void,
-		errorCallback: (error: ITrustlyPluginError) => void,
-	): void;
+	/**
+	 *
+	 * @param url
+	 * @param endUrls
+	 *
+	 * Return final url from your endUrls, String
+	 */
+	startTrustlyFlow(url: string, endUrls: string[]): Promise<string>;
 }
 
 ```
 
 ## Example
 
-```javascript
+```typescript
 
 cordova.plugins.Trustly.startTrustlyFlow(
     'https://test.trustly.com/demo/deposit?env=live', 
-    ["https://my.com/success", "https://my.com/failure"],
-    (result: ITrustlyPluginSuccess) => {
-        console.log(result.finalUrl);
-    }, (error: ITrustlyPluginError) => {
-        console.error(error);
-    });
-
+    ["https://my.com/success", "https://my.com/failure"])
+        .then((url: string) => {
+            console.log(url);
+        })
+        .catch((err: ITrustlyPluginError) => console.error(err));
 ```

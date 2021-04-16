@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Trustly Group AB
+ * Copyright (c) 2020 Trustly Group AB
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,21 +39,12 @@ public class TrustlyWKScriptOpenURLScheme: NSObject, WKScriptMessageHandler {
     }
 
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-
         if let parsed = getParsedJSON(object: message.body as AnyObject),
         let callback: String = parsed.object(forKey: "callback") as? String,
-        let urlscheme: String = parsed.object(forKey: "urlscheme") as? String,
-        let appUrl: URL = NSURL(string: urlscheme) as URL? {
-            let canOpenApplicationUrl = UIApplication.shared.canOpenURL(appUrl)
-            if canOpenApplicationUrl {
-                if #available(iOS 10.0, *) {
-                    UIApplication.shared.open(appUrl, options: [:], completionHandler: nil)
-                } else {
-                    UIApplication.shared.openURL(NSURL(string: urlscheme)! as URL)
-                }
-            }
-            let template = "%@(%@,\"%@\");"
-            let js: String = String(format: template, callback, String(canOpenApplicationUrl), urlscheme)
+        let urlscheme: String = parsed.object(forKey: "urlscheme") as? String
+        {
+            UIApplication.shared.openURL(NSURL(string: urlscheme)! as URL)
+            let js: String = String(format: "%@", [callback, urlscheme])
             webView.evaluateJavaScript(js, completionHandler: nil)
         }
     }

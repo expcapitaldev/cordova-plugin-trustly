@@ -1,12 +1,24 @@
-var argscheck = require('cordova/argscheck');
+'use strict';
+
 var exec = require('cordova/exec');
 
-var Trustly = {};
+var TrustlyPlugin = (function () {
 
-Trustly.startTrustlyFlow = function(arg, endUrls, successCallback, failureCallback, opts) {
-	opts = opts || {};
-	cordova.exec(successCallback, failureCallback,
-		'Trustly', 'startTrustlyFlow', [arg, endUrls, opts]);
-};
+	function TrustlyPlugin () {}
+
+	TrustlyPlugin.prototype = {
+
+		startTrustlyFlow: function (arg, endUrls) {
+			// waiting for checkout events from ios , see https://github.com/trustly/TrustlyIosSdk/pull/1/files
+			return new Promise(function (resolve, reject) {
+				exec(resolve, reject, 'Trustly', 'startTrustlyFlow', [arg, endUrls]);
+			});
+		}
+
+	};
+	return TrustlyPlugin;
+})();
+
+var Trustly = new TrustlyPlugin();
 
 module.exports = Trustly;
