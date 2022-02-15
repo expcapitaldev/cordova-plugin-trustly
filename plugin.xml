@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		id="cordova-plugin-trustly"
-		version="2.0.0">
+		version="2.1.0">
 
 	<name>Trustly Cordova Plugin</name>
 	<description>Add Trustly support to your cordova apps</description>

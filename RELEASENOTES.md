@@ -1,5 +1,9 @@
 # Release Notes
 
+### Version 2.1.0 (15/0/2022)
+
+- fix: add null check for event handler
+
 ### Version 2.0.0 (15/04/2021)
 
 - feat: update to 2.0.0 SDK version
