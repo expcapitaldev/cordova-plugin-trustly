@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		id="cordova-plugin-trustly"
-		version="2.1.0">
+		version="3.0.0">
 
 	<name>Trustly Cordova Plugin</name>
 	<description>Add Trustly support to your cordova apps</description>
@@ -61,6 +61,7 @@
 
 		<header-file src="src/ios/CDVTrustly-Bridging-Header.h" />
 		<source-file src="src/ios/CDVTrustlyPlugin.swift" />
+		<source-file src="src/ios/CDVTrustlyCheckoutDelegate.swift" />
 		<source-file src="src/ios/CDVTrustlyOpenURLScheme.swift" />
 		<source-file src="src/ios/CDVTrustlyWKWebView.swift" />
 
