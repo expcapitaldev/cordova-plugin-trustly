@@ -27,9 +27,17 @@ import WebKit
 import SafariServices
 
 public class TrustlyWKWebView: UIView, WKNavigationDelegate, WKUIDelegate, SFSafariViewControllerDelegate {
-    var trustlyView: WKWebView?
     var endUrls: [String]
     var completionBlock: ((String) -> Void)
+
+    var webView: WKWebView?
+    var trustlyWKScriptHandler: TrustlyWKScriptOpenURLScheme!
+
+    public weak var delegate: TrustlyCheckoutDelegate? {
+        didSet {
+            trustlyWKScriptHandler.trustlyCheckoutDelegate = delegate
+        }
+    }
 
     public init?(checkoutUrl: String, endUrls: [String], frame: CGRect, completionBlock: @escaping ((String) -> Void)) {
         self.endUrls = endUrls
@@ -41,20 +49,21 @@ public class TrustlyWKWebView: UIView, WKNavigationDelegate, WKUIDelegate, SFSaf
         configuration.userContentController = userContentController
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
 
-        trustlyView = WKWebView(frame: frame, configuration: configuration)
-        guard let trustlyView = trustlyView else { return nil }
+        webView = WKWebView(frame: frame, configuration: configuration)
+        guard let webView = webView else { return nil }
 
-        trustlyView.navigationDelegate = self
-        trustlyView.uiDelegate = self
+        webView.navigationDelegate = self
+        webView.uiDelegate = self
 
-        userContentController.add(
-            TrustlyWKScriptOpenURLScheme(webView: trustlyView), name: TrustlyWKScriptOpenURLScheme.NAME)
+        trustlyWKScriptHandler = TrustlyWKScriptOpenURLScheme(webView: webView)
+        userContentController.add(trustlyWKScriptHandler, name: TrustlyWKScriptOpenURLScheme.NAME)
+
         if let url = URL(string: checkoutUrl) {
-            trustlyView.load(URLRequest(url: url))
-            trustlyView.allowsBackForwardNavigationGestures = true
+            webView.load(URLRequest(url: url))
+            webView.allowsBackForwardNavigationGestures = true
         }
 
-        addSubview(trustlyView)
+        addSubview(webView)
     }
 
     public required init?(coder aDecoder: NSCoder) {

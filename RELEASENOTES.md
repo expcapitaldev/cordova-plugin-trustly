@@ -1,5 +1,9 @@
 # Release Notes
 
+### Version 3.0.0 (13/04/2022)
+
+- feat(ios): support checkout events
+
 ### Version 2.1.0 (15/0/2022)
 
 - fix: add null check for event handler
