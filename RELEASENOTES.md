@@ -1,5 +1,9 @@
 # Release Notes
 
+### Version 3.1.0 (31/05/2022)
+
+- feat(android): openURLScheme refactored, chooser added
+
 ### Version 3.0.0 (13/04/2022)
 
 - feat(ios): support checkout events
