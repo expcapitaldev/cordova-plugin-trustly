@@ -67,7 +67,8 @@ public class TrustlyJavascriptInterface {
 		} else {
 			Intent intent = new Intent(Intent.ACTION_VIEW);
 			intent.setData(Uri.parse(URIScheme));
-			activity.startActivityForResult(intent, 0);
+//			activity.startActivityForResult(intent, 0);
+			activity.startActivityForResult(Intent.createChooser(intent, null), 0);
 		}
 		return false;
 	}
